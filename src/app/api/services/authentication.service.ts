@@ -19,5 +19,6 @@ export class AuthenticationService {
 
   login(password: string) {
     localStorage.setItem('userToken', Md5.hashStr(Md5.hashStr(password).toString()).toString());
+    this.currentUserToken.next(localStorage.getItem('userToken'));
   }
 }
