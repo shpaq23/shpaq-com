@@ -205,7 +205,9 @@ input.error {
 .underlineHover:hover:after{
   width: 100%;
 }
-
+a:hover{
+  text-decoration: none;
+}
 *:focus {
   outline: none;
 }
