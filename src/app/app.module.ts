@@ -7,6 +7,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShpaqModule } from './shpaq/shpaq.module';
 import {WipModule} from './wip/wip.module';
 import { NavbarComponent } from './navbar/navbar.component';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {ErrorInterceptor} from './api/interceptors/error-interceptor';
+import {TokenInterceptor} from './api/interceptors/token-interceptor';
 
 @NgModule({
   declarations: [
@@ -18,9 +21,13 @@ import { NavbarComponent } from './navbar/navbar.component';
     AppRoutingModule,
     NgbModule,
     ShpaqModule,
-    WipModule
+    WipModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
