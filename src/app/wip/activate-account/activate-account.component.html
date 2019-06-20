@@ -1,0 +1,25 @@
+<div class="wrapper fadeInDown">
+  <div *ngIf="success" class="alert alert-success">
+    Activation link has been sent to your e-mail address.
+  </div>
+  <div *ngIf="serverErrors" class="alert alert-danger">
+    No <strong>inactive</strong> User for given e-mail address.
+  </div>
+  <div id="formContent" [class.invalid]="invalid">
+    <h3>Activate Account</h3>
+    <div *ngIf="(submitted && form.invalid)" class="errors">
+      <div class="error" *ngIf="form.get('email').hasError('required')">E-mail is required.</div>
+      <div class="error" *ngIf="form.get('email').hasError('email')">Invalid E-mail.</div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+      <input [class.error]="submitted && form.get('email').invalid" type="email" id="text" class="fadeIn second" name="email" placeholder="E-mail" formControlName="email">
+      <input type="submit" class="fadeIn fourth" value="Activate Account" [disabled]="loading || success">
+      <div *ngIf="loading">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div id="formFooter" class="fadeIn fourth">
+        <a class="underlineHover" [routerLink]="'/wip/login'">Back to login</a>
+      </div>
+    </form>
+  </div>
+</div>

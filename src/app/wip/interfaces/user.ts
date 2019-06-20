@@ -16,6 +16,6 @@ export interface User {
   updatedAt?: string;
   createdAt?: string;
   emailVerifiedAt?: string;
-  activated: boolean;
-  deleted: boolean;
+  activated?: boolean;
+  deleted?: boolean;
 }

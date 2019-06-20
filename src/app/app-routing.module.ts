@@ -7,6 +7,9 @@ import {AuthGuard} from './api/guards/auth.guard';
 import {WipGuard} from './api/guards/wip.guard';
 import {LoginComponent} from './wip/login/login.component';
 import {RegisterComponent} from './wip/register/register.component';
+import {ForgotPasswordComponent} from './wip/forgot-password/forgot-password.component';
+import {ResetPasswordComponent} from './wip/reset-password/reset-password.component';
+import {ActivateAccountComponent} from './wip/activate-account/activate-account.component';
 
 const routes: Routes = [
   {path: '', component: ProjectComponent},
@@ -23,6 +26,21 @@ const routes: Routes = [
   {
     path: 'wip/register',
     component: RegisterComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'wip/forgotpassword',
+    component: ForgotPasswordComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'wip/resetpassword',
+    component: ResetPasswordComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'wip/activateaccount',
+    component: ActivateAccountComponent,
     canActivate: [AuthGuard]
   },
   {

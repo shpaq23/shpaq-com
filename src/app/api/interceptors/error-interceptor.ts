@@ -15,7 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.wipService.logout();
         location.reload(true);
       }
-      const error = err.error.data;
+      const error = err.error.data || err.statusText;
       return throwError(error);
     }));
   }

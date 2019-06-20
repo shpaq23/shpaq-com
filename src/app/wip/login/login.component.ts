@@ -17,6 +17,9 @@ export class LoginComponent implements OnInit {
   invalid = false;
   serverErrors: string;
   loading = false;
+  resetPassword = false;
+  registered = false;
+  inactive = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -28,6 +31,8 @@ export class LoginComponent implements OnInit {
       password: new FormControl('', {validators: [Validators.required], updateOn: 'change'})
     }, {updateOn: 'submit'});
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/wip';
+    this.resetPassword = this.route.snapshot.queryParams.success === 'resetpassword';
+    this.registered = this.route.snapshot.queryParams.success === 'registered';
   }
   get formValue(): LoginCredentials {
     return this.form.getRawValue();
@@ -51,11 +56,13 @@ export class LoginComponent implements OnInit {
       .subscribe({
         complete: () => { this.router.navigate([this.returnUrl]); },
         error: err => {
-          console.log(err);
           this.serverErrors = err;
+          console.log(err);
+          this.inactive = err.toString().includes('inactive');
           this.setInvalid();
           this.loading = false;
         }
       });
   }
+
 }

@@ -1,0 +1,35 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent" [class.invalid]="invalid">
+    <h3>Register</h3>
+    <div *ngIf="(submitted && form.invalid)" class="errors">
+
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+      <input [class.error]="submitted && form.get('first_name').invalid"
+             type="text" class="fadeIn second" name="first_name" placeholder="First Name*" formControlName="first_name">
+      <input [class.error]="submitted && form.get('last_name').invalid"
+             type="text" class="fadeIn second" name="last_name" placeholder="Last Name*" formControlName="last_name">
+      <input [class.error]="submitted && form.get('email').invalid"
+             type="email" class="fadeIn second" name="email" placeholder="E-mail*" formControlName="email">
+      <div formGroupName="passwords">
+        <input [class.error]="submitted && form.get('password').invalid"
+               type="text" class="fadeIn second" name="password" placeholder="Password*" formControlName="password">
+        <input [class.error]="submitted && form.get('password_confirmation').invalid"
+               type="text" class="fadeIn second" name="password_confirmation" placeholder="Confirm Password*" formControlName="password_confirmation">
+      </div>
+      <input type="text" class="fadeIn second" name="description" placeholder="Description" formControlName="description">
+
+      <select formControlName="position" >
+        <option *ngFor="let position of positions" [ngValue]="position.value">{{position.name}}</option>
+      </select>
+
+      <input [class.disabled]="loading" type="submit" class="fadeIn fourth" value="Log In" [disabled]="loading">
+      <div *ngIf="loading">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div id="formFooter" class="fadeIn fourth">
+        <a class="underlineHover" [routerLink]="'/wip/login'">Have account? Sign Ip!</a>
+      </div>
+    </form>
+  </div>
+</div>

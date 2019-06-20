@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {LoginCredentials} from '../../wip/interfaces/login-credentials';
 import {Token} from '../../wip/interfaces/token';
 import {map} from 'rxjs/operators';
+import {ResetPassword} from '../../wip/interfaces/reset-password';
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,14 @@ export class WipService {
   }
   checkEmailAvailability(email: string) {
     return this.http.get(this.url + '/user/email/' + email);
+  }
+  resetPasswordStep1(email: string) {
+    return this.http.get(this.url + '/user/reset/' + email);
+  }
+  resetPasswordStep2(resetPasswordForm: ResetPassword) {
+    return this.http.post(this.url + '/user/reset', resetPasswordForm);
+  }
+  activateAccount(email: string) {
+    return this.http.get(this.url + '/user/reactivate/' + email);
   }
 }

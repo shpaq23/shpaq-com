@@ -1,8 +1,21 @@
 <div class="wrapper fadeInDown">
+  <div *ngIf="resetPassword" class="alert alert-success">
+    Password has been reset successfully. Sign In!
+  </div>
+  <div *ngIf="registered" class="alert alert-success">
+    Your account has been created successfully. Sign In!
+    <strong>Check your email to activate your account.</strong>
+  </div>
+  <div *ngIf="serverErrors" class="alert alert-danger">
+    {{serverErrors}}<br>
+    <span *ngIf="inactive">
+        You did not receive the activation link?<br>
+         <strong><a class="underlineHover" [routerLink]="'/wip/activateaccount'">Click here!</a></strong>
+    </span>
+  </div>
   <div id="formContent" [class.invalid]="invalid">
-    <h3>Sign in</h3>
-    <div *ngIf="((submitted && form.invalid) || serverErrors)" class="errors">
-      <div class="error" *ngIf="serverErrors">{{serverErrors}}</div>
+    <h3>Sign In</h3>
+    <div *ngIf="(submitted && form.invalid)" class="errors">
       <div class="error" *ngIf="form.get('password').hasError('required')">Password is required.</div>
       <div class="error" *ngIf="form.get('email').hasError('required')">E-mail is required.</div>
       <div class="error" *ngIf="form.get('email').hasError('email')">Invalid E-mail.</div>
@@ -15,8 +28,8 @@
         <div class="spinner-border text-primary"></div>
       </div>
       <div id="formFooter" class="fadeIn fourth">
-        <a class="underlineHover" href="#">Forgot Password?</a>
-        <a class="underlineHover" href="#">Dont have account? Sign Up!</a>
+        <a class="underlineHover" [routerLink]="'/wip/forgotpassword'">Forgot Password?</a>
+        <a class="underlineHover" [routerLink]="'/wip/register'">Dont have account? Sign Up!</a>
       </div>
     </form>
   </div>
