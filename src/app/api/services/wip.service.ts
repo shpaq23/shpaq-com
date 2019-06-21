@@ -34,6 +34,15 @@ export class WipService {
   get loggedUserTokenValue(): Token {
     return this.loggedUserToken.value;
   }
+  set currenLoggedUser(user: BehaviorSubject<User>) {
+    this.loggedUser = user;
+  }
+  get currentLoggedUser(): BehaviorSubject<User> {
+    return this.loggedUser;
+  }
+  updateCurrentCharacter(user: User) {
+    this.loggedUser.next(user);
+  }
   logout() {
     localStorage.removeItem('wipUser');
     this.loggedUserToken.next(null);

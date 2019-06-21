@@ -8,6 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   navbarOpen = false;
+  @Input() title = 'Projects';
+  @Input() titleUrl = '/';
   @Input() projects: {name: string, href: string, external: boolean, selected: boolean}[];
   constructor() { }
 

@@ -10,13 +10,22 @@ import {RegisterComponent} from './wip/register/register.component';
 import {ForgotPasswordComponent} from './wip/forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './wip/reset-password/reset-password.component';
 import {ActivateAccountComponent} from './wip/activate-account/activate-account.component';
+import {AdminComponent} from './wip/admin/admin.component';
+import {UserResolver} from './api/resolvers/user-resolver';
+import {UsersResolver} from './api/resolvers/users-resolver';
+import {AccountComponent} from './wip/account/account.component';
 
 const routes: Routes = [
   {path: '', component: ProjectComponent},
   {
     path: 'wip',
     component: WipComponent,
-    canActivate: [AuthGuard, WipGuard]
+    canActivate: [AuthGuard, WipGuard],
+    resolve: {user: UserResolver},
+    children: [
+      {path: 'account', component: AccountComponent},
+      {path: 'admin', component: AdminComponent, resolve: {users: UsersResolver}},
+    ]
   },
   {
     path: 'wip/login',

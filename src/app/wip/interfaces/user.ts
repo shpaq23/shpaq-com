@@ -10,6 +10,7 @@ export interface User {
   specializationField1: string;
   specializationField2: string;
   checkbox: boolean;
+  isAdmin: boolean;
 
   lastActivity?: string;
   deletedAt?: string;

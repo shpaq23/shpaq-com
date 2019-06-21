@@ -5,24 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShpaqModule } from './shpaq/shpaq.module';
-import {WipModule} from './wip/wip.module';
-import { NavbarComponent } from './navbar/navbar.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ErrorInterceptor} from './api/interceptors/error-interceptor';
 import {TokenInterceptor} from './api/interceptors/token-interceptor';
+import {WipModule} from './wip/wip.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavbarComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     ShpaqModule,
-    WipModule,
-    HttpClientModule
+    HttpClientModule,
+    WipModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

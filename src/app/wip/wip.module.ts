@@ -11,14 +11,23 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ActivateAccountComponent } from './activate-account/activate-account.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
+import {NavbarComponent} from '../navbar/navbar.component';
+import { UserComponent } from './user/user.component';
+import { AdminComponent } from './admin/admin.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [WipComponent, AuthorizationComponent, RegisterComponent,
-    LoginComponent, ForgotPasswordComponent, ResetPasswordComponent, ActivateAccountComponent, RegisterFormComponent],
+    LoginComponent, ForgotPasswordComponent, ResetPasswordComponent,
+    ActivateAccountComponent, RegisterFormComponent, NavbarComponent,
+    UserComponent, AdminComponent, AccountComponent],
   imports: [
     CommonModule,
     WipRoutingModule,
     ReactiveFormsModule
+  ],
+  exports: [
+    NavbarComponent
   ]
 })
 export class WipModule { }

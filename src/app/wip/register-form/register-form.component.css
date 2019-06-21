@@ -253,3 +253,6 @@ input[type=submit].disabled {
   width: 90%;
   max-width: 1000px;
 }
+input:disabled, textarea:disabled, select:disabled {
+  background-color: rgba(181, 181, 181, 0.78);
+}

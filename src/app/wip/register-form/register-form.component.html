@@ -3,7 +3,7 @@
     Something went wrong, try again later.
   </div>
   <div id="formContent" [class.invalid]="invalid">
-    <h3>Sign Up!</h3>
+    <h3> {{user ? (details ? 'User Details' : 'Edit User') : 'Sign Up!'}}</h3>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
       <div class="row">
         <div class="col-lg-6">
@@ -17,7 +17,7 @@
                  type="text" class="fadeIn second" name="last_name" id="last_name" formControlName="last_name">
           <div class="error" *ngIf="submitted && form.get('last_name').hasError('required')">Last Name is required.</div>
           <div class="error" *ngIf="submitted && form.get('last_name').hasError('maxlength')">Last Name is too long. Max 40 characters.</div>
-          <div formGroupName="passwords">
+          <div *ngIf="!user && !details" formGroupName="passwords">
             <label for="password" class="fadeIn second">Password*</label>
             <input autocomplete="new-password" [class.error]="submitted && form.get('passwords').get('password').invalid"
                    type="password" class="fadeIn second" name="password" id="password" formControlName="password">
@@ -62,17 +62,19 @@
           <div class="error" *ngIf="submitted && form.get('specialization_field_2').hasError('maxlength')">Field is to long. Max 255 characters.</div>
 
 
-          <label for="checkbox" class="fadeIn second btn btn-primary"><span [ngStyle]="{'width' : '90%', 'float' : 'left'}">{{positionMapper[positionSelected]['checkbox']}}</span>
+          <label [class.disabled]="details" for="checkbox" class="fadeIn second btn btn-primary" [class.btn-secondary] ="details"><span [ngStyle]="{'width' : '90%', 'float' : 'left'}">{{positionMapper[positionSelected]['checkbox']}}</span>
             <input [ngStyle]="{'margin-top': '1%'}" type="checkbox" class="fadeIn second" id="checkbox" name="checkbox" formControlName="checkbox" autocomplete="off">
           </label>
         </div>
       </div>
 
-      <input [class.disabled]="loading || form.pending" type="submit" class="fadeIn fourth" value="Register" [disabled]="loading || form.pending">
+      <input *ngIf="!details" [class.disabled]="loading || form.pending" type="submit" class="fadeIn fourth" value="Register" [disabled]="loading || form.pending">
+
+      <input *ngIf="details" (click)="editUser.emit(true)" type="button" class="fadeIn fourth" value="Edit User">
       <div *ngIf="loading">
         <div class="spinner-border text-primary"></div>
       </div>
-      <div id="formFooter" class="fadeIn fourth">
+      <div *ngIf="!user && !details" id="formFooter" class="fadeIn fourth">
         <a class="underlineHover" [routerLink]="'/wip/login'">Have an account? Sign Ip!</a>
       </div>
     </form>

@@ -1,3 +1,6 @@
-<p>
-  wip works!
-</p>
+<div class="wrapper">
+  <app-navbar [title]="'WiP'"  [titleUrl]="'/wip'" [projects]="navbar"></app-navbar>
+  <div class="border-bottom"></div>
+  <router-outlet (activate)="onRouteActivate()" (deactivate)="onRouteActivate()"></router-outlet>
+
+</div>

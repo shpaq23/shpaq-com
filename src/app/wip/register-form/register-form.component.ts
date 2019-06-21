@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../interfaces/user';
 import {WipService} from '../../api/services/wip.service';
@@ -11,13 +11,15 @@ import {RegisterForm} from '../interfaces/register-form';
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.css']
 })
-export class RegisterFormComponent implements OnInit {
+export class RegisterFormComponent implements OnChanges {
 
   @Output() registerForm = new EventEmitter<RegisterForm>();
+  @Output() editUser = new EventEmitter<boolean>();
   @Input() type = 'register';
   @Input() user: User = null;
   @Input() admin: false;
   @Input() serverErrors = null;
+  @Input() details = false;
 
   form: FormGroup;
   submitted = false;
@@ -49,24 +51,41 @@ export class RegisterFormComponent implements OnInit {
   positionSelected: string;
   constructor(private wipService: WipService) { }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.details);
     this.positionSelected = 'tester';
     this.form = new FormGroup({
-      first_name: new FormControl('', {validators: [Validators.required, Validators.maxLength(40)]}),
-      last_name: new FormControl('', {validators: [Validators.required, Validators.maxLength(40)]}),
-      email: new FormControl('',
-        {validators: [Validators.required, Validators.email], asyncValidators: [this.emailExist(this.wipService)],
-          updateOn: 'change'}),
-      passwords: new FormGroup({
-        password: new FormControl('', {validators: [Validators.required, Validators.minLength(8)]}),
-        password_confirmation: new FormControl('', {validators: [Validators.required]})
-      }, {validators: [this.checkPasswords]}),
-      description: new FormControl(''),
-      position: new FormControl(this.positions[0].value, {validators: [Validators.required]}),
-      specialization_field_1: new FormControl('', {validators: [Validators.required, Validators.maxLength(255)]}),
-      specialization_field_2: new FormControl('', {validators: [Validators.required, Validators.maxLength(255)]}),
-      checkbox: new FormControl('')
+      first_name: new FormControl(this.user ? this.user.firstName : '',
+        {validators: [Validators.required, Validators.maxLength(40)]}),
+      last_name: new FormControl(this.user ? this.user.lastName : '',
+        {validators: [Validators.required, Validators.maxLength(40)]}),
+      email: new FormControl({value: this.user ? this.user.email : '', disabled: this.user || this.details},
+        {validators: [Validators.required, Validators.email], updateOn: 'change'}),
+      description: new FormControl(this.user ? this.user.description : ''),
+      position: new FormControl(this.user ? this.user.position : this.positions[0].value,
+        {validators: [Validators.required]}),
+      specialization_field_1: new FormControl(this.user ? this.user.specializationField1 : '',
+        {validators: [Validators.required, Validators.maxLength(255)]}),
+      specialization_field_2: new FormControl(this.user ? this.user.specializationField2 : '',
+        {validators: [Validators.required, Validators.maxLength(255)]}),
+      checkbox: new FormControl({value: this.user ? this.user.checkbox : '', disabled: this.details})
     });
+    if (this.details) {
+      this.form.disable();
+    } else {
+      setTimeout(() => {
+        if (!this.user) {
+          this.form.get('email').setAsyncValidators(this.emailExist(this.wipService));
+          this.form.addControl('passwords', new FormGroup({
+            password: new FormControl('', {validators: [Validators.required, Validators.minLength(8)]}),
+            password_confirmation: new FormControl('', {validators: [Validators.required]})
+          }, {validators: [this.checkPasswords]}));
+        }
+        this.form.enable();
+        this.form.get('email').disable();
+      }, 20);
+    }
+
   }
   emailExist(wipService: WipService, time: number = 1000) {
     return (email: FormControl) => {
@@ -96,8 +115,8 @@ export class RegisterFormComponent implements OnInit {
   }
   get formValue(): RegisterForm {
     const form = this.form.getRawValue();
-    form.password = form.passwords.password;
-    form.password_confirmation = form.passwords.password_confirmation;
+    form.password = form.passwords && form.passwords.password;
+    form.password_confirmation = form.passwords && form.passwords.password_confirmation;
     delete form.passwords;
     form.checkbox = form.checkbox.length !== 0;
     return form;
@@ -111,4 +130,6 @@ export class RegisterFormComponent implements OnInit {
     this.loading = true;
     this.registerForm.emit(this.formValue);
   }
+
+
 }
