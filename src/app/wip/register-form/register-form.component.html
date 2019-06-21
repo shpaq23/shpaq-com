@@ -1,34 +1,79 @@
 <div class="wrapper fadeInDown">
+  <div *ngIf="serverErrors" class="alert alert-danger">
+    Something went wrong, try again later.
+  </div>
   <div id="formContent" [class.invalid]="invalid">
-    <h3>Register</h3>
-    <div *ngIf="(submitted && form.invalid)" class="errors">
+    <h3>Sign Up!</h3>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div class="row">
+        <div class="col-lg-6">
+          <label for="first_name" class="fadeIn second" >First Name*</label>
+          <input [class.error]="submitted && form.get('first_name').invalid"
+                 type="text" class="fadeIn second" name="first_name" id="first_name" formControlName="first_name">
+          <div class="error" *ngIf="submitted && form.get('first_name').hasError('required')">Name is required.</div>
+          <div class="error" *ngIf="submitted && form.get('first_name').hasError('maxlength')">Name is too long. Max 40 characters.</div>
+          <label for="last_name" class="fadeIn second">Last Name*</label>
+          <input [class.error]="submitted && form.get('last_name').invalid"
+                 type="text" class="fadeIn second" name="last_name" id="last_name" formControlName="last_name">
+          <div class="error" *ngIf="submitted && form.get('last_name').hasError('required')">Last Name is required.</div>
+          <div class="error" *ngIf="submitted && form.get('last_name').hasError('maxlength')">Last Name is too long. Max 40 characters.</div>
+          <div formGroupName="passwords">
+            <label for="password" class="fadeIn second">Password*</label>
+            <input autocomplete="new-password" [class.error]="submitted && form.get('passwords').get('password').invalid"
+                   type="password" class="fadeIn second" name="password" id="password" formControlName="password">
+            <div class="error" *ngIf="submitted && form.get('passwords').get('password').hasError('required')">Password is required.</div>
+            <div class="error" *ngIf="submitted && form.get('passwords').get('password').hasError('minlength')">Password is too short. Min 8 characters.</div>
 
-    </div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" >
-      <input [class.error]="submitted && form.get('first_name').invalid"
-             type="text" class="fadeIn second" name="first_name" placeholder="First Name*" formControlName="first_name">
-      <input [class.error]="submitted && form.get('last_name').invalid"
-             type="text" class="fadeIn second" name="last_name" placeholder="Last Name*" formControlName="last_name">
-      <input [class.error]="submitted && form.get('email').invalid"
-             type="email" class="fadeIn second" name="email" placeholder="E-mail*" formControlName="email">
-      <div formGroupName="passwords">
-        <input [class.error]="submitted && form.get('password').invalid"
-               type="text" class="fadeIn second" name="password" placeholder="Password*" formControlName="password">
-        <input [class.error]="submitted && form.get('password_confirmation').invalid"
-               type="text" class="fadeIn second" name="password_confirmation" placeholder="Confirm Password*" formControlName="password_confirmation">
+            <label for="password_confirmation" class="fadeIn second">Confirm Password*</label>
+            <input autocomplete="new-password" [class.error]="submitted && form.get('passwords').get('password_confirmation').invalid"
+                   type="password" class="fadeIn second" name="password_confirmation" id="password_confirmation" formControlName="password_confirmation">
+            <div class="error" *ngIf="submitted && form.get('passwords').get('password_confirmation').hasError('required')">Confirmation Password is required.</div>
+            <div class="error" *ngIf="submitted && form.get('passwords').hasError('checkPasswords')">Passwords do not match.</div>
+
+          </div>
+          <label for="real-email" class="fadeIn second">E-mail*</label>
+          <input id="email" style="display:none" type="text" name="fakeemail">
+          <input autocomplete="nope" [class.error]="(submitted && form.get('email').invalid) || form.get('email').hasError('emailExist')"
+                 type="email" class="fadeIn second" name="email" id="real-email" formControlName="email">
+          <div *ngIf="form.pending">
+            <div class="spinner-border text-primary"></div>
+          </div>
+          <div class="error" *ngIf="submitted && form.get('email').hasError('required')">E-mail required</div>
+          <div class="error" *ngIf="submitted && form.get('email').hasError('email')">Invalid E-mail.</div>
+          <div class="error" *ngIf="form.get('email').hasError('emailExist')">This E-mail is already used.</div>
+
+          <label for="description" class="fadeIn second">Description</label>
+          <textarea class="fadeIn second" name="description" formControlName="description" id="description" rows="4"></textarea>
+        </div>
+        <div class="col-lg-6">
+          <label for="position" class="fadeIn second">Position*</label>
+          <select formControlName="position" id="position" class="fadeIn second" (ngModelChange)="changePosition($event)">
+            <option *ngFor="let position of positions" [ngValue]="position.value">{{position.name}}</option>
+          </select>
+          <label for="specialization_field_1" class="fadeIn second">{{positionMapper[positionSelected]['specialization_field_1']}}*</label>
+          <textarea [class.error]="submitted && form.get('specialization_field_1').invalid"
+                    type="text" class="fadeIn second" id="specialization_field_1" name="specialization_field_1" formControlName="specialization_field_1" rows="3"></textarea>
+          <div class="error" *ngIf="submitted && form.get('specialization_field_1').hasError('required')">Field required.</div>
+          <div class="error" *ngIf="submitted && form.get('specialization_field_1').hasError('maxlength')">Field is to long. Max 255 characters.</div>
+          <label for="specialization_field_2" class="fadeIn second">{{positionMapper[positionSelected]['specialization_field_2']}}*</label>
+          <textarea [class.error]="submitted && form.get('specialization_field_2').invalid"
+                    type="text" class="fadeIn second" id="specialization_field_2" name="specialization_field_2" formControlName="specialization_field_2" rows="3"></textarea>
+          <div class="error" *ngIf="submitted && form.get('specialization_field_2').hasError('required')">Field required.</div>
+          <div class="error" *ngIf="submitted && form.get('specialization_field_2').hasError('maxlength')">Field is to long. Max 255 characters.</div>
+
+
+          <label for="checkbox" class="fadeIn second btn btn-primary"><span [ngStyle]="{'width' : '90%', 'float' : 'left'}">{{positionMapper[positionSelected]['checkbox']}}</span>
+            <input [ngStyle]="{'margin-top': '1%'}" type="checkbox" class="fadeIn second" id="checkbox" name="checkbox" formControlName="checkbox" autocomplete="off">
+          </label>
+        </div>
       </div>
-      <input type="text" class="fadeIn second" name="description" placeholder="Description" formControlName="description">
 
-      <select formControlName="position" >
-        <option *ngFor="let position of positions" [ngValue]="position.value">{{position.name}}</option>
-      </select>
-
-      <input [class.disabled]="loading" type="submit" class="fadeIn fourth" value="Log In" [disabled]="loading">
+      <input [class.disabled]="loading || form.pending" type="submit" class="fadeIn fourth" value="Register" [disabled]="loading || form.pending">
       <div *ngIf="loading">
         <div class="spinner-border text-primary"></div>
       </div>
       <div id="formFooter" class="fadeIn fourth">
-        <a class="underlineHover" [routerLink]="'/wip/login'">Have account? Sign Ip!</a>
+        <a class="underlineHover" [routerLink]="'/wip/login'">Have an account? Sign Ip!</a>
       </div>
     </form>
   </div>

@@ -13,7 +13,7 @@
   border-radius: 10px 10px 10px 10px;
   background: #fff;
   width: 90%;
-  max-width: 450px;
+  max-width: 1000px;
   position: relative;
   padding: 0;
   -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
@@ -77,11 +77,11 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
   transform: scale(0.95);
 }
 
-input[type=text], input[type=password], input[type=email], select {
+input[type=text], input[type=password], input[type=email], select, textarea {
   background-color: #f6f6f6;
   color: #0d0d0d;
   padding: 15px 32px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
@@ -95,8 +95,15 @@ input[type=text], input[type=password], input[type=email], select {
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
 }
-
-input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, select:focus {
+label {
+  width: 85%;
+  text-align: left;
+  margin: 0;
+}
+textarea {
+  text-align: left;
+}
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, select:focus, textarea:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
@@ -104,7 +111,7 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, sel
 input[type=text]::placeholder, input[type=password]::placeholder, input[type=email]::placeholder, select::placeholder {
   color: #cccccc;
 }
-input.error {
+input.error, textarea.error {
   background-color: rgba(255, 172, 167, 0.21)
 }
 
@@ -215,7 +222,7 @@ a:hover{
 #icon {
   width:60%;
 }
-.error {
+div.error {
   color: red;
 }
 .invalid {
@@ -244,5 +251,5 @@ input[type=submit].disabled {
 }
 .alert {
   width: 90%;
-  max-width: 450px;
+  max-width: 1000px;
 }

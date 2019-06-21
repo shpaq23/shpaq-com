@@ -7,6 +7,7 @@ import {LoginCredentials} from '../../wip/interfaces/login-credentials';
 import {Token} from '../../wip/interfaces/token';
 import {map} from 'rxjs/operators';
 import {ResetPassword} from '../../wip/interfaces/reset-password';
+import {RegisterForm} from '../../wip/interfaces/register-form';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +38,8 @@ export class WipService {
     localStorage.removeItem('wipUser');
     this.loggedUserToken.next(null);
   }
-  register(user: User) {
-    return this.http.post(this.url + '/user/register', user);
+  register(registerForm: RegisterForm) {
+    return this.http.post(this.url + '/user/register', registerForm);
   }
   getUser() {
     return this.http.get<User>(this.url + '/user');

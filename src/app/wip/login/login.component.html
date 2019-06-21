@@ -3,8 +3,11 @@
     Password has been reset successfully. Sign In!
   </div>
   <div *ngIf="registered" class="alert alert-success">
-    Your account has been created successfully. Sign In!
+    Your account has been created.<br>
     <strong>Check your email to activate your account.</strong>
+  </div>
+  <div *ngIf="activated" class="alert alert-success">
+    Your account has been activated. Sign In!<br>
   </div>
   <div *ngIf="serverErrors" class="alert alert-danger">
     {{serverErrors}}<br>
