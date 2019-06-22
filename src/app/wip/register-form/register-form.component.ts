@@ -15,16 +15,18 @@ export class RegisterFormComponent implements OnChanges {
 
   @Output() registerForm = new EventEmitter<RegisterForm>();
   @Output() editUser = new EventEmitter<boolean>();
-  @Input() type = 'register';
+  @Output() backToDetails = new EventEmitter<boolean>();
   @Input() user: User = null;
-  @Input() admin: false;
+  @Input() admin = false;
   @Input() serverErrors = null;
   @Input() details = false;
+  @Input() editSuccess = false;
+  @Input() loading = false;
+  @Input() submitted = false;
 
   form: FormGroup;
-  submitted = false;
   invalid = false;
-  loading = false;
+
 
   positions = [
     {name: 'Tester', value: 'tester'},
@@ -53,6 +55,8 @@ export class RegisterFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(this.details);
+    console.log(this.loading);
+    this.loading = false;
     this.positionSelected = 'tester';
     this.form = new FormGroup({
       first_name: new FormControl(this.user ? this.user.firstName : '',
@@ -70,20 +74,24 @@ export class RegisterFormComponent implements OnChanges {
         {validators: [Validators.required, Validators.maxLength(255)]}),
       checkbox: new FormControl({value: this.user ? this.user.checkbox : '', disabled: this.details})
     });
+    console.log(this.form.pending);
     if (this.details) {
-      this.form.disable();
+      setTimeout(() => {
+        this.form.disable();
+      }, 5);
     } else {
       setTimeout(() => {
+        this.form.enable();
+        this.form.get('email').disable();
         if (!this.user) {
           this.form.get('email').setAsyncValidators(this.emailExist(this.wipService));
           this.form.addControl('passwords', new FormGroup({
             password: new FormControl('', {validators: [Validators.required, Validators.minLength(8)]}),
             password_confirmation: new FormControl('', {validators: [Validators.required]})
           }, {validators: [this.checkPasswords]}));
+          this.form.get('email').enable();
         }
-        this.form.enable();
-        this.form.get('email').disable();
-      }, 20);
+      }, 5);
     }
 
   }

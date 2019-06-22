@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {WipService} from '../../api/services/wip.service';
 import {ActivatedRoute, PRIMARY_OUTLET, Router, UrlSegmentGroup, UrlTree} from '@angular/router';
@@ -14,6 +14,7 @@ export class WipComponent implements OnInit {
 
   loggedUser: User = null;
   loaded = false;
+  isAdmin = false;
   navbar: {name: string, href: string, external: boolean, selected: boolean}[] = [];
   constructor(private title: Title,
               private wipService: WipService,
@@ -22,6 +23,7 @@ export class WipComponent implements OnInit {
               this.navbar = [
                 {name: 'Account', href: 'account', external: false, selected: false},
                 {name: 'Admin', href: 'admin', external: false, selected: false},
+                {name: 'Logout', href: 'logout', external: false, selected: false},
               ]; }
 
   ngOnInit() {
@@ -30,15 +32,19 @@ export class WipComponent implements OnInit {
       .subscribe({
         next: value => {
           this.loggedUser = value.user.data;
-          console.log(this.loggedUser);
-          this.wipService.currenLoggedUser = new BehaviorSubject<User>(this.loggedUser);
+          this.isAdmin = this.loggedUser.isAdmin;
+          if (!this.isAdmin) {
+            this.navbar.splice(1, 1);
+            this.onRouteActivate();
+          }
+          this.wipService.currentLoggedUser = new BehaviorSubject<User>(this.loggedUser);
           setTimeout(() => {
             this.loaded = true;
           }, 100 );
         }
       });
     if (this.loaded) {
-      this.wipService.currenLoggedUser.asObservable().subscribe({
+      this.wipService.currentLoggedUser.asObservable().subscribe({
         next: value => {
           this.loggedUser = value;
         }
@@ -52,7 +58,14 @@ export class WipComponent implements OnInit {
   }
   onRouteActivate() {
     this.navbar[0].selected = this.navbar[0].href === this.currentUrl;
-    this.navbar[1].selected = this.navbar[1].href === this.currentUrl;
+    setTimeout(() => {
+      if (this.isAdmin) {
+        this.navbar[1].selected = this.navbar[1].href === this.currentUrl;
+      }
+    }, 10);
+
   }
+
+
 
 }

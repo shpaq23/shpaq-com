@@ -246,9 +246,10 @@ div.error {
     -webkit-transform: translateX(0);
   }
 }
-input[type=submit].disabled {
+input[type=submit].disabled, input[type=button].disabled.button-cancel{
   background-color: #3d749a;
 }
+
 .alert {
   width: 90%;
   max-width: 1000px;

@@ -8,6 +8,8 @@ import {Token} from '../../wip/interfaces/token';
 import {map} from 'rxjs/operators';
 import {ResetPassword} from '../../wip/interfaces/reset-password';
 import {RegisterForm} from '../../wip/interfaces/register-form';
+import {EditUser} from '../../wip/interfaces/edit-user';
+import {ServerResponse} from '../../wip/interfaces/server-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,7 @@ export class WipService {
 
   private url = environment.apiUrl;
   private loggedUser: BehaviorSubject<User>;
+  private users: BehaviorSubject<User[]>;
   private loggedUserToken: BehaviorSubject<Token>;
   constructor(private http: HttpClient) {
     this.loggedUserToken = new BehaviorSubject<Token>(JSON.parse(localStorage.getItem('wipUser')));
@@ -34,14 +37,23 @@ export class WipService {
   get loggedUserTokenValue(): Token {
     return this.loggedUserToken.value;
   }
-  set currenLoggedUser(user: BehaviorSubject<User>) {
+  set currentLoggedUser(user: BehaviorSubject<User>) {
     this.loggedUser = user;
   }
   get currentLoggedUser(): BehaviorSubject<User> {
     return this.loggedUser;
   }
-  updateCurrentCharacter(user: User) {
+  updateCurrentLoggedUser(user: User) {
     this.loggedUser.next(user);
+  }
+  set currentUsers(users: BehaviorSubject<User[]>) {
+    this.users = users;
+  }
+  get currentUsers(): BehaviorSubject<User[]> {
+    return this.users;
+  }
+  updateCurrentUsers(users: User[]) {
+    this.users.next(users);
   }
   logout() {
     localStorage.removeItem('wipUser');
@@ -51,7 +63,7 @@ export class WipService {
     return this.http.post(this.url + '/user/register', registerForm);
   }
   getUser() {
-    return this.http.get<User>(this.url + '/user');
+    return this.http.get<ServerResponse>(this.url + '/user');
   }
   getUsers() {
     return this.http.get<User[]>(this.url + '/users');
@@ -67,5 +79,20 @@ export class WipService {
   }
   activateAccount(email: string) {
     return this.http.get(this.url + '/user/reactivate/' + email);
+  }
+  editUser(editUser: EditUser) {
+    return this.http.post<ServerResponse>(this.url + '/user/edit', editUser);
+  }
+  deleteUser(uuid: string) {
+    return this.http.get<ServerResponse>(this.url + '/user/delete/' + uuid);
+  }
+  restoreUser(uuid: string) {
+    return this.http.get<ServerResponse>(this.url + '/user/restore/' + uuid);
+  }
+  activateUser(uuid: string) {
+    return this.http.get<ServerResponse>(this.url + '/user/activate/' + uuid);
+  }
+  makeAdmin(uuid: string) {
+    return this.http.get<ServerResponse>(this.url + '/user/setadmin/' + uuid);
   }
 }

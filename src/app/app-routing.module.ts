@@ -14,6 +14,10 @@ import {AdminComponent} from './wip/admin/admin.component';
 import {UserResolver} from './api/resolvers/user-resolver';
 import {UsersResolver} from './api/resolvers/users-resolver';
 import {AccountComponent} from './wip/account/account.component';
+import {IsAdminGuard} from './api/guards/is-admin.guard';
+import {LogoutComponent} from './wip/logout/logout.component';
+import {IsLoggedGuard} from './api/guards/is-logged.guard';
+import {AdminEditUserComponent} from './wip/admin-edit-user/admin-edit-user.component';
 
 const routes: Routes = [
   {path: '', component: ProjectComponent},
@@ -24,33 +28,45 @@ const routes: Routes = [
     resolve: {user: UserResolver},
     children: [
       {path: 'account', component: AccountComponent},
-      {path: 'admin', component: AdminComponent, resolve: {users: UsersResolver}},
+      {path: 'admin',
+        component: AdminComponent,
+        resolve: {users: UsersResolver},
+        canActivate: [IsAdminGuard],
+        children: [
+          {path: 'user/:uuid', component: AdminEditUserComponent}
+        ]
+      },
     ]
   },
   {
     path: 'wip/login',
     component: LoginComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, IsLoggedGuard]
   },
   {
     path: 'wip/register',
     component: RegisterComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, IsLoggedGuard]
   },
   {
     path: 'wip/forgotpassword',
     component: ForgotPasswordComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, IsLoggedGuard]
   },
   {
     path: 'wip/resetpassword',
     component: ResetPasswordComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, IsLoggedGuard]
   },
   {
     path: 'wip/activateaccount',
     component: ActivateAccountComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, IsLoggedGuard]
+  },
+  {
+    path: 'wip/logout',
+    component: LogoutComponent,
+    canActivate: [AuthGuard, WipGuard]
   },
   {
     path: 'authorization',

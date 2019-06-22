@@ -15,16 +15,20 @@ import {NavbarComponent} from '../navbar/navbar.component';
 import { UserComponent } from './user/user.component';
 import { AdminComponent } from './admin/admin.component';
 import { AccountComponent } from './account/account.component';
+import { LogoutComponent } from './logout/logout.component';
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.component';
 
 @NgModule({
   declarations: [WipComponent, AuthorizationComponent, RegisterComponent,
     LoginComponent, ForgotPasswordComponent, ResetPasswordComponent,
     ActivateAccountComponent, RegisterFormComponent, NavbarComponent,
-    UserComponent, AdminComponent, AccountComponent],
+    UserComponent, AdminComponent, AccountComponent, LogoutComponent, AdminEditUserComponent],
   imports: [
     CommonModule,
     WipRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbPaginationModule,
   ],
   exports: [
     NavbarComponent

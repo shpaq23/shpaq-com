@@ -2,6 +2,9 @@
   <div *ngIf="serverErrors" class="alert alert-danger">
     Something went wrong, try again later.
   </div>
+  <div *ngIf="editSuccess" class="alert alert-success">
+    User successfully edited.
+  </div>
   <div id="formContent" [class.invalid]="invalid">
     <h3> {{user ? (details ? 'User Details' : 'Edit User') : 'Sign Up!'}}</h3>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
@@ -65,13 +68,18 @@
           <label [class.disabled]="details" for="checkbox" class="fadeIn second btn btn-primary" [class.btn-secondary] ="details"><span [ngStyle]="{'width' : '90%', 'float' : 'left'}">{{positionMapper[positionSelected]['checkbox']}}</span>
             <input [ngStyle]="{'margin-top': '1%'}" type="checkbox" class="fadeIn second" id="checkbox" name="checkbox" formControlName="checkbox" autocomplete="off">
           </label>
+
         </div>
       </div>
 
-      <input *ngIf="!details" [class.disabled]="loading || form.pending" type="submit" class="fadeIn fourth" value="Register" [disabled]="loading || form.pending">
+      <input *ngIf="!details" [class.disabled]="loading || form.pending" type="submit" class="fadeIn fourth" [value]="user? 'Send form' : 'Register'" [disabled]="loading || form.pending">
+
+      <input (click)="backToDetails.emit(true)" [ngStyle]="{'margin-top': '-10px'}" *ngIf="!details && user" [class.disabled]="loading || form.pending" type="button" class="fadeIn fourth button-cancel" value="Go back to details" [disabled]="loading || form.pending">
 
       <input *ngIf="details" (click)="editUser.emit(true)" type="button" class="fadeIn fourth" value="Edit User">
-      <div *ngIf="loading">
+      <input *ngIf="details && admin" [ngStyle]="{'margin-top': '-10px'}" [routerLink]="'/wip/admin'" type="button" class="fadeIn fourth" value="Go back to list">
+
+      <div *ngIf="loading && !editSuccess">
         <div class="spinner-border text-primary"></div>
       </div>
       <div *ngIf="!user && !details" id="formFooter" class="fadeIn fourth">
