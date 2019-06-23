@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +11,6 @@ export class NavbarComponent implements OnInit {
   @Input() title = 'Projects';
   @Input() titleUrl = '/';
   @Input() projects: {name: string, href: string, external: boolean, selected: boolean}[];
-  @Output() childClicked = new EventEmitter<boolean>();
   constructor() { }
 
   ngOnInit() {

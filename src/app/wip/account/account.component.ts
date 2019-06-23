@@ -38,7 +38,6 @@ export class AccountComponent implements OnInit {
   }
 
   editUser() {
-    this.loading = true;
     this.wipService.editUser(this.editForm)
       .subscribe({
         next: value => {

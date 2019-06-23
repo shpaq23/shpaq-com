@@ -13,7 +13,7 @@
       <ng-container *ngFor="let project of projects">
         <li class="nav-item" [class.active]="project.selected">
           <a *ngIf="project.external" class="nav-link" [href]="project.href" target="_blank">{{project.name}}</a>
-          <a *ngIf="!project.external" (click)="childClicked.emit(true)" class="nav-link" [routerLink]="project.href">{{project.name}}</a>
+          <a *ngIf="!project.external" class="nav-link" [routerLink]="project.href">{{project.name}}</a>
         </li>
       </ng-container>
     </ul>
