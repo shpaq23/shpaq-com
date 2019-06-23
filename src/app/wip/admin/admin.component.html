@@ -12,7 +12,7 @@
         <th>Is Active</th>
         <th>Is Deleted</th>
         <th>Is Admin</th>
-        <th [colSpan]="3">Actions</th>
+        <th [colSpan]="4">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -26,19 +26,22 @@
         <td>{{user.deleted}}</td>
         <td>{{user.isAdmin}}</td>
         <td [ngStyle]="{'padding' : '0.5rem;'}">
-          <button type="button" class="btn btn-primary" [routerLink]="['/wip/admin/user/', user.uuid]">Edit</button>
+          <button [disabled]="loading" type="button" class="btn btn-primary" [routerLink]="['/wip/admin/user/', user.uuid]">Edit</button>
         </td>
         <td *ngIf="!user.deleted">
-          <button type="button" class="btn btn-danger" (click)="deleteUser(user.uuid)">Delete</button>
+          <button [disabled]="loading" type="button" class="btn btn-danger" (click)="deleteUser(user.uuid)">Delete</button>
         </td>
         <td *ngIf="user.deleted">
-          <button type="button" class="btn btn-success" (click)="restoreUser(user.uuid)">Restore</button>
+          <button [disabled]="loading" type="button" class="btn btn-success" (click)="restoreUser(user.uuid)">Restore</button>
         </td>
         <td *ngIf="!user.activated">
-          <button type="button" class="btn btn-success" (click)="activateUser(user.uuid)">Activate</button>
+          <button [disabled]="loading" type="button" class="btn btn-success" (click)="activateUser(user.uuid)">Activate</button>
         </td>
         <td *ngIf="!user.isAdmin">
-          <button type="button" class="btn btn-success" (click)="makeAdmin(user.uuid)">Set Admin</button>
+          <button [disabled]="loading" type="button" class="btn btn-success" (click)="makeAdmin(user.uuid)">Set Admin</button>
+        </td>
+        <td *ngIf="loading && chosenUuid === user.uuid">
+          <div class="spinner-border text-primary"></div>
         </td>
       </tr>
       </tbody>

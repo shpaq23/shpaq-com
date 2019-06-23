@@ -8,6 +8,7 @@ import {PRIMARY_OUTLET, Router, UrlSegmentGroup, UrlTree} from '@angular/router'
 })
 export class AppComponent implements OnInit {
 
+  childLoading = false;
   projects: {name: string, href: string, external: boolean, selected: boolean}[] = [];
   constructor(private router: Router) {}
   ngOnInit(): void {
@@ -24,5 +25,6 @@ export class AppComponent implements OnInit {
   }
   onRouteActivate() {
     this.projects[0].selected = this.projects[0].href === this.currentUrl;
+    this.childLoading = false;
   }
 }

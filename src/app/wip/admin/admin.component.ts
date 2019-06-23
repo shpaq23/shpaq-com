@@ -18,6 +18,7 @@ export class AdminComponent implements OnInit {
   pageSize = 2;
   childActivated = false;
   loading = false;
+  chosenUuid: string = null;
   constructor(private wipService: WipService,
               private router: Router,
               private activatedRoute: ActivatedRoute) { }
@@ -30,7 +31,6 @@ export class AdminComponent implements OnInit {
         next: value => {
           this.users = value.users.data;
           this.wipService.currentUsers = new BehaviorSubject<User[]>(this.users);
-          console.log(this.users);
           this.collectionSize = this.users.length;
         }
       });
@@ -44,7 +44,7 @@ export class AdminComponent implements OnInit {
     this.childActivated = this.currentUrl === 'user';
   }
   findUserByUuid(uuid: string): User {
-    let foundUser: User;
+    let foundUser: User = null;
     this.users.forEach(user => {
       if (user.uuid === uuid) {
         foundUser = user;
@@ -59,39 +59,47 @@ export class AdminComponent implements OnInit {
   }
 
   deleteUser(uuid: string) {
+    this.chosenUuid = uuid;
     this.loading = true;
     this.wipService.deleteUser(uuid)
       .subscribe(value => {
         this.loading = false;
         this.updateUsers(value.data, uuid);
         this.wipService.updateCurrentUsers(this.users);
+        this.chosenUuid = null;
       });
   }
   restoreUser(uuid: string) {
+    this.chosenUuid = uuid;
     this.loading = true;
     this.wipService.restoreUser(uuid)
       .subscribe(value => {
         this.loading = false;
         this.updateUsers(value.data, uuid);
         this.wipService.updateCurrentUsers(this.users);
+        this.chosenUuid = null;
       });
   }
   activateUser(uuid: string) {
+    this.chosenUuid = uuid;
     this.loading = true;
     this.wipService.activateUser(uuid)
       .subscribe(value => {
         this.loading = false;
         this.updateUsers(value.data, uuid);
         this.wipService.updateCurrentUsers(this.users);
+        this.chosenUuid = null;
       });
   }
   makeAdmin(uuid: string) {
+    this.chosenUuid = uuid;
     this.loading = true;
     this.wipService.makeAdmin(uuid)
       .subscribe(value => {
         this.loading = false;
         this.updateUsers(value.data, uuid);
         this.wipService.updateCurrentUsers(this.users);
+        this.chosenUuid = null;
       });
   }
 

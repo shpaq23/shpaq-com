@@ -12,7 +12,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ActivateAccountComponent } from './activate-account/activate-account.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import {NavbarComponent} from '../navbar/navbar.component';
-import { UserComponent } from './user/user.component';
 import { AdminComponent } from './admin/admin.component';
 import { AccountComponent } from './account/account.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -22,8 +21,9 @@ import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.compon
 @NgModule({
   declarations: [WipComponent, AuthorizationComponent, RegisterComponent,
     LoginComponent, ForgotPasswordComponent, ResetPasswordComponent,
-    ActivateAccountComponent, RegisterFormComponent, NavbarComponent,
-    UserComponent, AdminComponent, AccountComponent, LogoutComponent, AdminEditUserComponent],
+    ActivateAccountComponent, RegisterFormComponent,
+    NavbarComponent, AdminComponent, AccountComponent, LogoutComponent,
+    AdminEditUserComponent],
   imports: [
     CommonModule,
     WipRoutingModule,

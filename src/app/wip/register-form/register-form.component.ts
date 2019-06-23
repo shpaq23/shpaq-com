@@ -54,8 +54,6 @@ export class RegisterFormComponent implements OnChanges {
   constructor(private wipService: WipService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.details);
-    console.log(this.loading);
     this.loading = false;
     this.positionSelected = 'tester';
     this.form = new FormGroup({
@@ -63,6 +61,10 @@ export class RegisterFormComponent implements OnChanges {
         {validators: [Validators.required, Validators.maxLength(40)]}),
       last_name: new FormControl(this.user ? this.user.lastName : '',
         {validators: [Validators.required, Validators.maxLength(40)]}),
+      passwords: new FormGroup({
+        password: new FormControl('', {validators: [Validators.required, Validators.minLength(8)]}),
+        password_confirmation: new FormControl('', {validators: [Validators.required]})
+      }, {validators: [this.checkPasswords]}),
       email: new FormControl({value: this.user ? this.user.email : '', disabled: this.user || this.details},
         {validators: [Validators.required, Validators.email], updateOn: 'change'}),
       description: new FormControl(this.user ? this.user.description : ''),
@@ -74,24 +76,21 @@ export class RegisterFormComponent implements OnChanges {
         {validators: [Validators.required, Validators.maxLength(255)]}),
       checkbox: new FormControl({value: this.user ? this.user.checkbox : '', disabled: this.details})
     });
-    console.log(this.form.pending);
     if (this.details) {
       setTimeout(() => {
         this.form.disable();
-      }, 5);
+      }, 20);
     } else {
       setTimeout(() => {
         this.form.enable();
         this.form.get('email').disable();
         if (!this.user) {
           this.form.get('email').setAsyncValidators(this.emailExist(this.wipService));
-          this.form.addControl('passwords', new FormGroup({
-            password: new FormControl('', {validators: [Validators.required, Validators.minLength(8)]}),
-            password_confirmation: new FormControl('', {validators: [Validators.required]})
-          }, {validators: [this.checkPasswords]}));
           this.form.get('email').enable();
+        } else {
+          this.form.removeControl('passwords');
         }
-      }, 5);
+      }, 20);
     }
 
   }

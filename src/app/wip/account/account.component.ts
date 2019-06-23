@@ -22,7 +22,6 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.wipService.currentLoggedUser.value;
-    console.log(this.user);
   }
 
   toEdit() {
@@ -35,7 +34,6 @@ export class AccountComponent implements OnInit {
     delete registerForm.password_confirmation;
     this.editForm = registerForm;
     this.editForm.uuid = this.user.uuid;
-    console.log(this.editForm);
     this.editUser();
   }
 

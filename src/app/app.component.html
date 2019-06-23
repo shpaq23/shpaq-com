@@ -1,4 +1,5 @@
-<app-navbar [projects]="projects"></app-navbar>
+<app-navbar (childClicked)="childLoading = true" [projects]="projects"></app-navbar>
+<div *ngIf="childLoading" [ngStyle]="{'margin-top': '10px'}" class="spinner-border text-primary"></div>
 <div class="content">
   <router-outlet (activate)="onRouteActivate()"></router-outlet>
 </div>

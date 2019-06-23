@@ -1,5 +1,6 @@
 <div class="wrapper">
-  <app-navbar [title]="'WiP'"  [titleUrl]="'/wip'" [projects]="navbar"></app-navbar>
+  <app-navbar (childClicked)="childLoading = true" [title]="'WiP'"  [titleUrl]="'/wip'" [projects]="navbar"></app-navbar>
+  <div *ngIf="childLoading" [ngStyle]="{'margin-top': '10px'}" class="spinner-border text-primary"></div>
   <div class="border-bottom"></div>
   <router-outlet (activate)="onRouteActivate()" (deactivate)="onRouteActivate()"></router-outlet>
 

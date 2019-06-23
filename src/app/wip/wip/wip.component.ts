@@ -15,6 +15,7 @@ export class WipComponent implements OnInit {
   loggedUser: User = null;
   loaded = false;
   isAdmin = false;
+  childLoading = false;
   navbar: {name: string, href: string, external: boolean, selected: boolean}[] = [];
   constructor(private title: Title,
               private wipService: WipService,
@@ -63,7 +64,7 @@ export class WipComponent implements OnInit {
         this.navbar[1].selected = this.navbar[1].href === this.currentUrl;
       }
     }, 10);
-
+    this.childLoading = false;
   }
 
 
